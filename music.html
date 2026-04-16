@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>museline | 오선지</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background: #121317;
+      color: #f3ede6;
+      line-height: 1.8;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 16, 20, 0.90);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.22);
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      padding: 16px 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.86);
+      transition: 0.25s ease;
+      font-size: 0.98rem;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: rgba(255,255,255,0.16);
+      border-color: rgba(255,255,255,0.28);
+      transform: translateY(-2px);
+    }
+
+    header {
+      position: relative;
+      min-height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.72)),
+        url("music-bg.jpg") center/cover no-repeat;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 42%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 20px;
+      max-width: 860px;
+    }
+
+    .hero-content h1 {
+      margin: 0;
+      font-size: 3.4rem;
+      font-weight: 300;
+      letter-spacing: 6px;
+    }
+
+    .hero-line {
+      width: 90px;
+      height: 1px;
+      margin: 24px auto;
+      background: rgba(255,255,255,0.45);
+    }
+
+    .hero-content p {
+      margin: 0 auto;
+      color: rgba(255,255,255,0.82);
+      font-size: 1.06rem;
+    }
+
+    .quick-links {
+      margin-top: 34px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .quick-links a {
+      padding: 11px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #f8f2eb;
+      transition: 0.2s ease;
+    }
+
+    .quick-links a:hover {
+      background: rgba(255,255,255,0.18);
+      transform: translateY(-2px);
+    }
+
+    main {
+      padding: 80px 0 100px;
+      background: linear-gradient(to bottom, #131419, #1a1c22);
+    }
+
+    .intro-panel {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      margin-bottom: 70px;
+    }
+
+    .panel-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 26px;
+      padding: 30px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    }
+
+    .panel-box h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      font-size: 1.8rem;
+      font-weight: 400;
+    }
+
+    .panel-box p {
+      margin: 0;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px 14px;
+      text-align: center;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .stat-card span {
+      color: rgba(255,255,255,0.66);
+      font-size: 0.95rem;
+    }
+
+    .section {
+      margin-bottom: 70px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 26px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h3 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 400;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: rgba(255,255,255,0.64);
+    }
+
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .music-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 14px 35px rgba(0,0,0,0.16);
+      transition: 0.22s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(219, 181, 132, 0.16);
+      border: 1px solid rgba(219, 181, 132, 0.26);
+      color: #f2d7b4;
+      font-size: 0.88rem;
+    }
+
+    .card h4 {
+      margin: 0 0 10px;
+      font-size: 1.28rem;
+      font-weight: 500;
+    }
+
+    .card p {
+      margin: 0 0 18px;
+      color: rgba(255,255,255,0.70);
+      font-size: 0.98rem;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .meta span {
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.72);
+      font-size: 0.88rem;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 0.94rem;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #c99967, #e4bc8f);
+      color: #2b1c12;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: #f3ede6;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-2px);
+    }
+
+    .wide-box {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      padding: 30px;
+    }
+
+    .list-board {
+      display: grid;
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      flex-wrap: wrap;
+    }
+
+    .list-item strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+
+    .list-item small {
+      color: rgba(255,255,255,0.60);
+      font-size: 0.9rem;
+    }
+
+    .empty-note {
+      margin-top: 20px;
+      padding: 22px;
+      border-radius: 18px;
+      text-align: center;
+      color: rgba(255,255,255,0.58);
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed rgba(255,255,255,0.10);
+    }
+
+    footer {
+      text-align: center;
+      padding: 34px 20px;
+      color: rgba(255,255,255,0.45);
+      background: #0d0e12;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    @media (max-width: 1024px) {
+      .archive-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .intro-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        min-height: 340px;
+      }
+
+      .hero-content h1 {
+        font-size: 2.3rem;
+        letter-spacing: 3px;
+      }
+
+      .hero-content p {
+        font-size: 0.98rem;
+      }
+
+      .archive-grid,
+      .music-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-box,
+      .card,
+      .wide-box {
+        padding: 22px;
+      }
+
+      .section-head h3 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="index.html">홈</a>
+      <a href="music.html" class="active">미디강좌  </a>
+      <a href="poet.html">음악이론 </a>
+      <a href="contact.html">확장강좌  </a>
+      <a href="board.html" target="_blank">방명록</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>미디강좌</h1>
+      <div class="hero-line"></div>
+      <p>
+        개인용 컴퓨터 기반 DAW를 배우고 MIDI 녹음, 편집, 재생,그리고 최종 작업물로 완성의 기반을 다지는 공간. 
+      </p>
+      <div class="quick-links">
+        <a href="#score">악보 아카이브</a>
+        <a href="#original">나의 창작 음악</a>
+        <a href="#reference">기존 음악 자료</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <section class="section" id="score">
+        <div class="section-head">
+          <div>
+            <h3>악보 아카이브</h3>
+            <p>악보 이미지, PDF, 정리 문서 등을 모아두는 공간</p>
+          </div>
+        </div>
+
+        <div class="archive-grid">
+          <article class="card">
+            <span class="tag">악보 PDF</span>
+            <h4>발라드 스케치 No.1</h4>
+            <p>
+              메인 선율과 코드 진행이 정리된 기본 악보입니다. 피아노 중심 편곡 아이디어와 함께 보관합니다.
+            </p>
+            <div class="meta">
+              <span>PDF</span>
+              <span>발라드</span>
+              <span>초안</span>
+            </div>
+            <div class="button-row">
+              <a href="#" class="btn btn-primary">악보 보기</a>
+              <a href="#" class="btn btn-secondary">다운로드</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="tag">악보 이미지</span>
+            <h4>피아노 테마 스코어</h4>
+            <p>
+              악상 스케치용으로 정리한 이미지 악보입니다. 빠르게 훑어보기에 적합한 자료입니다.
+            </p>
+            <div class="meta">
+              <span>JPG</span>
+              <span>피아노</span>
+              <span>테마</span>
+            </div>
+            <div class="button-row">
+              <a href="#" class="btn btn-primary">이미지 열기</a>
+              <a href="#" class="btn btn-secondary">설명 보기</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="tag">정리 문서</span>
+            <h4>코드 진행 메모</h4>
+            <p>
+              곡별 주요 코드 진행과 전조 아이디어, 변형 패턴을 기록한 참고 문서입니다.
+            </p>
+            <div class="meta">
+              <span>TXT</span>
+              <span>코드</span>
+              <span>메모</span>
+            </div>
+            <div class="button-row">
+              <a href="#" class="btn btn-primary">문서 열기</a>
+              <a href="#" class="btn btn-secondary">관련 곡 보기</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+     </div>
+  </main>
+
+  <footer>
+    <p>© 2026 museline. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
