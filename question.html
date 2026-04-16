@@ -3,184 +3,175 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>방명록 | 추미정의 오선지와 원고지</title>
+  <title>방명록</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
-      background: linear-gradient(to bottom, #fffdf8, #f8f4ec);
-      color: #4b4036;
-      line-height: 1.7;
+      padding: 0;
+      font-family: "Malgun Gothic", sans-serif;
+      background: #f4f4f4;
+      color: #222;
     }
 
-    a {
-      color: #7a4e2d;
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: #b06d3b;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 50px 0 70px;
+    .wrap {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
     }
 
     h1 {
       text-align: center;
-      color: #6a4026;
-      margin-bottom: 10px;
-      font-size: 2.2rem;
+      margin-bottom: 30px;
     }
 
-    .sub-text {
-      text-align: center;
-      color: #7c6a5d;
-      margin-bottom: 28px;
-      font-size: 1rem;
-    }
-
-    .login-guide {
-      background: rgba(255, 250, 245, 0.95);
-      border: 1px solid rgba(180, 135, 92, 0.16);
-      border-radius: 18px;
-      box-shadow: 0 8px 22px rgba(106, 64, 38, 0.06);
-      padding: 24px 20px;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-
-    .login-guide p {
-      margin: 0 0 16px;
-      color: #6a5648;
-      font-size: 0.98rem;
-    }
-
-    .login-button {
-      display: inline-block;
-      padding: 12px 18px;
-      background: linear-gradient(135deg, #d9a15f, #f0c98c);
-      color: #4a321f;
-      font-weight: bold;
+    .guestbook-form,
+    .guestbook-list {
+      background: #fff;
       border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(176, 109, 59, 0.18);
-      transition: all 0.2s ease;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
-    .login-button:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, #e2af72, #f6d7a7);
-      color: #4a321f;
+    .guestbook-form input,
+    .guestbook-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
     }
 
-    .board-wrap {
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(180, 135, 92, 0.14);
-      border-radius: 20px;
-      box-shadow: 0 10px 28px rgba(106, 64, 38, 0.08);
-      padding: 30px;
+    .guestbook-form textarea {
+      min-height: 120px;
+      resize: vertical;
     }
 
-    .disqus-note {
-      text-align: center;
-      color: #8b7768;
-      font-size: 0.92rem;
-      margin-bottom: 14px;
+    .guestbook-form button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
     }
 
-    .top-link-wrap {
-      text-align: center;
-      margin-top: 30px;
+    .guestbook-form button:hover {
+      background: #555;
     }
 
-    .top-link {
-      display: inline-block;
-      padding: 12px 18px;
-      background: linear-gradient(135deg, #d9a15f, #f0c98c);
-      color: #4a321f;
+    .entry {
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+    }
+
+    .entry:last-child {
+      border-bottom: none;
+    }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .entry-name {
       font-weight: bold;
-      border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(176, 109, 59, 0.18);
-      transition: all 0.2s ease;
+      font-size: 16px;
     }
 
-    .top-link:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, #e2af72, #f6d7a7);
-      color: #4a321f;
+    .entry-date {
+      font-size: 13px;
+      color: #777;
     }
 
-    footer {
+    .entry-message {
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .empty {
+      color: #777;
       text-align: center;
-      padding: 30px 20px 40px;
-      color: #8b7768;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        width: 92%;
-        padding: 35px 0 50px;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      .board-wrap {
-        padding: 20px 16px;
-      }
-
-      .login-guide {
-        padding: 18px 14px;
-      }
+      padding: 20px 0;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-   
+  <div class="wrap">
+    <h1>방명록</h1>
 
-    <div class="login-guide">
-      <p>방명록 작성은 로그인 후 이용할 수 있습니다.</p>
-      <a class="login-button" href="https://disqus.com/profile/login/" target="_blank">
-        🔐 로그인 하러 가기
-      </a>
+    <div class="guestbook-form">
+      <input type="text" id="name" placeholder="이름을 입력하세요" />
+      <textarea id="message" placeholder="메시지를 남겨주세요"></textarea>
+      <button onclick="addEntry()">등록하기</button>
     </div>
 
-    <div class="board-wrap">
-      <p class="disqus-note">아래 댓글 영역에서 로그인 후 바로 글을 남길 수 있습니다.</p>
-
-      <div id="disqus_thread"></div>
-      <script>
-        var disqus_config = function () {
-          this.page.url = 'https://chumijung.github.io/board.html';
-          this.page.identifier = 'guestbook-board';
-        };
-
-        (function() {
-          var d = document, s = d.createElement('script');
-          s.src = 'https://chumijung.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      </script>
-      <noscript>
-        JavaScript를 활성화해야 방명록을 볼 수 있습니다.
-      </noscript>
-    </div>
-
-    <div class="top-link-wrap">
-      <a class="top-link" href="../../김추미정파일들/홈페이지/index.html">홈페이지로 돌아가기</a>
+    <div class="guestbook-list">
+      <div id="entries">
+        <p class="empty">아직 등록된 글이 없습니다.</p>
+      </div>
     </div>
   </div>
 
-  <footer>
-    <p>© 2026 museline. All Rights Reserved.</p>
-  </footer>
+  <script>
+    const entriesContainer = document.getElementById("entries");
+
+    function addEntry() {
+      const nameInput = document.getElementById("name");
+      const messageInput = document.getElementById("message");
+
+      const name = nameInput.value.trim();
+      const message = messageInput.value.trim();
+
+      if (!name || !message) {
+        alert("이름과 메시지를 모두 입력해주세요.");
+        return;
+      }
+
+      const now = new Date();
+      const dateString =
+        now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, "0") + "-" +
+        String(now.getDate()).padStart(2, "0") + " " +
+        String(now.getHours()).padStart(2, "0") + ":" +
+        String(now.getMinutes()).padStart(2, "0");
+
+      if (entriesContainer.querySelector(".empty")) {
+        entriesContainer.innerHTML = "";
+      }
+
+      const entry = document.createElement("div");
+      entry.className = "entry";
+
+      entry.innerHTML = `
+        <div class="entry-header">
+          <span class="entry-name">${escapeHtml(name)}</span>
+          <span class="entry-date">${dateString}</span>
+        </div>
+        <div class="entry-message">${escapeHtml(message)}</div>
+      `;
+
+      entriesContainer.prepend(entry);
+
+      nameInput.value = "";
+      messageInput.value = "";
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
 </body>
 </html>
