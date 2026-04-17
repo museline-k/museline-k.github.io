@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>질문하세요</title>
+  <title>질문방 | 뮤즈라인</title>
   <style>
     * {
       box-sizing: border-box;
@@ -11,167 +11,197 @@
 
     body {
       margin: 0;
-      padding: 0;
-      font-family: "Malgun Gothic", sans-serif;
-      background: #f4f4f4;
-      color: #222;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      color: #4b4036;
+      line-height: 1.7;
+      background:
+        linear-gradient(to bottom, rgba(255,253,248,0.96), rgba(248,244,236,0.98)),
+        repeating-linear-gradient(
+          to bottom,
+          rgba(170, 140, 110, 0.08) 0px,
+          rgba(170, 140, 110, 0.08) 1px,
+          transparent 1px,
+          transparent 36px
+        );
+      min-height: 100vh;
     }
 
-    .wrap {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
+    a {
+      color: #7a4e2d;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #b06d3b;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 50px 0 70px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .music-note {
+      font-size: 1.3rem;
+      color: #b07a4d;
+      opacity: 0.75;
+      letter-spacing: 10px;
+      margin-bottom: 10px;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 30px;
+      color: #6a4026;
+      margin: 0 0 10px;
+      font-size: 2.3rem;
+      letter-spacing: 0.02em;
     }
 
-    .guestbook-form,
-    .guestbook-list {
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-
-    .guestbook-form input,
-    .guestbook-form textarea {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-
-    .guestbook-form textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    .guestbook-form button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      background: #333;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    .guestbook-form button:hover {
-      background: #555;
-    }
-
-    .entry {
-      border-bottom: 1px solid #ddd;
-      padding: 15px 0;
-    }
-
-    .entry:last-child {
-      border-bottom: none;
-    }
-
-    .entry-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .entry-name {
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    .entry-date {
-      font-size: 13px;
-      color: #777;
-    }
-
-    .entry-message {
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
-
-    .empty {
-      color: #777;
+    .sub-text {
       text-align: center;
-      padding: 20px 0;
+      color: #7c6a5d;
+      margin-bottom: 0;
+      font-size: 1rem;
+    }
+
+    .board-wrap {
+      background: rgba(255, 255, 255, 0.90);
+      border: 1px solid rgba(180, 135, 92, 0.18);
+      border-radius: 22px;
+      box-shadow: 0 14px 30px rgba(106, 64, 38, 0.10);
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .board-wrap::before {
+      content: "♪ ♫";
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-size: 1.2rem;
+      color: rgba(176, 109, 59, 0.18);
+      pointer-events: none;
+    }
+
+    .board-wrap::after {
+      content: "♩";
+      position: absolute;
+      bottom: 14px;
+      left: 18px;
+      font-size: 1.4rem;
+      color: rgba(176, 109, 59, 0.14);
+      pointer-events: none;
+    }
+
+    .disqus-note {
+      text-align: center;
+      color: #8b7768;
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed rgba(176, 109, 59, 0.25);
+    }
+
+    .top-link-wrap {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .top-link {
+      display: inline-block;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #d9a15f, #f0c98c);
+      color: #4a321f;
+      font-weight: bold;
+      border-radius: 999px;
+      box-shadow: 0 6px 16px rgba(176, 109, 59, 0.18);
+      transition: all 0.2s ease;
+    }
+
+    .top-link:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #e2af72, #f6d7a7);
+      color: #4a321f;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px 40px;
+      color: #8b7768;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        width: 92%;
+        padding: 35px 0 50px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .music-note {
+        font-size: 1.1rem;
+        letter-spacing: 6px;
+      }
+
+      .board-wrap {
+        padding: 20px 16px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>질문하세요&nbsp;&nbsp;</h1>
-
-    <div class="guestbook-form">
-      <input type="text" id="name" placeholder="이름을 입력하세요" />
-      <textarea id="message" placeholder="메시지를 남겨주세요"></textarea>
-      <button onclick="addEntry()">등록하기</button>
+  <div class="container">
+    <div class="hero">
+      <div class="music-note">♪ ♫ ♩</div>
+      <h1>뮤즈라인 질문방</h1>
+      <p class="sub-text">음악처럼 편안하게, 자유롭게 질문을 남겨주세요.</p>
     </div>
 
-    <div class="guestbook-list">
-      <div id="entries">
-        <p class="empty">아직 등록된 글이 없습니다.</p>
-      </div>
+    <div class="board-wrap">
+      <p class="disqus-note">
+        아래 댓글 영역에서 로그인 후 자유롭게 글을 남기실 수 있습니다.
+      </p>
+
+      <div id="disqus_thread"></div>
+
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https://museline.github.io/question.html';
+          this.page.identifier = 'museline-guestbook';
+          this.page.title = '뮤즈라인 방명록';
+        };
+
+        (function() {
+          var d = document, s = d.createElement('script');
+          s.src = 'https://CHUMIJUNG.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+
+      <noscript>
+        JavaScript를 활성화해야 질문방을 볼 수 있습니다.
+      </noscript>
     </div>
-</div>
 
-  <script>
-    const entriesContainer = document.getElementById("entries");
+    <div class="top-link-wrap">
+      <a class="top-link" href="../../김추미정파일들/홈페이지/index.html">홈페이지로 돌아가기</a>
+    </div>
+  </div>
 
-    function addEntry() {
-      const nameInput = document.getElementById("name");
-      const messageInput = document.getElementById("message");
-
-      const name = nameInput.value.trim();
-      const message = messageInput.value.trim();
-
-      if (!name || !message) {
-        alert("이름과 메시지를 모두 입력해주세요.");
-        return;
-      }
-
-      const now = new Date();
-      const dateString =
-        now.getFullYear() + "-" +
-        String(now.getMonth() + 1).padStart(2, "0") + "-" +
-        String(now.getDate()).padStart(2, "0") + " " +
-        String(now.getHours()).padStart(2, "0") + ":" +
-        String(now.getMinutes()).padStart(2, "0");
-
-      if (entriesContainer.querySelector(".empty")) {
-        entriesContainer.innerHTML = "";
-      }
-
-      const entry = document.createElement("div");
-      entry.className = "entry";
-
-      entry.innerHTML = `
-        <div class="entry-header">
-          <span class="entry-name">${escapeHtml(name)}</span>
-          <span class="entry-date">${dateString}</span>
-        </div>
-        <div class="entry-message">${escapeHtml(message)}</div>
-      `;
-
-      entriesContainer.prepend(entry);
-
-      nameInput.value = "";
-      messageInput.value = "";
-    }
-
-    function escapeHtml(text) {
-      const div = document.createElement("div");
-      div.textContent = text;
-      return div.innerHTML;
-    }
-  </script>
+  <footer>
+    <p>© 2026 뮤즈라인. All Rights Reserved.</p>
+  </footer>
 </body>
 </html>
