@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>오디오파일 불러오기</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background: #121317;
+      color: #f3ede6;
+      line-height: 1.7;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* 상단 메뉴 */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 16, 20, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      padding: 14px 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      font-size: 0.95rem;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.16);
+    }
+
+    /* 헤더 */
+    header {
+      text-align: center;
+      padding: 10px 10px 0px;
+      background: linear-gradient(to bottom, #1a1c22, #131419);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 400;
+    }
+
+    header p {
+      margin-top: 12px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+    }
+
+    /* 본문 */
+    main {
+      padding: 40px 0 80px;
+    }
+
+    .manual-content {
+      display: grid;
+      gap: 28px;
+    }
+
+    .image-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .image-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .image-box img:hover {
+      transform: scale(1.01);
+      opacity: 0.96;
+    }
+
+    .caption {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+    }
+
+    /* 하단 버튼 */
+    .nav-buttons {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.16);
+      transform: translateY(-1px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* 이미지 확대 모달 */
+    .image-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.92);
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      cursor: pointer;
+    }
+
+    .image-modal img {
+      max-width: 95%;
+      max-height: 95%;
+      width: auto;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      cursor: default;
+    }
+
+    .image-modal .close-text {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.7rem;
+      }
+
+      .nav-buttons {
+        flex-direction: column;
+      }
+
+      .image-modal {
+        padding: 16px;
+      }
+
+      .image-modal .close-text {
+        top: 12px;
+        right: 16px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 메뉴 -->
+  <nav>
+    <div class="container">
+      <a href="index.html">홈</a>
+      <a href="midi.html">미디강좌</a>
+      <a href="1-1.html">메뉴얼 목록</a>
+    </div>
+  </nav>
+
+  <!-- 제목 -->
+  <header>
+    <h1>곡을 녹음해보기 (첫번째 방법) </h1><div class="caption" style="color: #ffcc00; font-size: 1.2rem;">
+  이미지를 클릭하면 크게보입니다. 되돌리기는 키보드의 ESC 클릭.
+</div>
+    
+  </header>
+           <center>곡을 녹음하는 방법으로는 두가지 방법이 있습니다.<br>
+		   첫번째 방법으로는 미디건반이라는 건반을 하나구입해서<br>
+		   오디오 인터페이스에 연결한뒤에 녹음버튼을 클릭하고<br>
+		   미디건반으로 연주를 하면 큐베이스 프로그램에 자동으로<br>
+		   연주가 녹음이 되는 방식입니다.<br>
+		   이렇게 하려면 우선 미디건반을 구입하셔야 겠지요.<br>
+		   미디건반에 대한 자료들은 바로 이어지는 다음 강좌때<br>
+			   바로 자세한 설명 하겠습니다.<br><br>
+		   두번째 녹음하는 방법으로는 마우스로 클릭을 하면서 음정을 기록하는<br>
+		   방법이 있습니다. <br>
+		   미디건반이 없더라도 녹음의 또다른 방법이 될수 있으니<br>
+		   미디건반을 구입할때까지는 두번째 방법으로 녹음하셔도 됩니다.<br>
+		   음정을 하나 하나 손가락으로 입력해야 하기때문에<br>
+		   작업시간이 오래 걸리는 불편함은 있을것입니다.<br>
+		   하지만 이것도 익숙해지면 때론 이방법으로 작업해야 하는<br>
+		   경우도 종종 생기곤 합니다.<br>
+		   오늘 강의는 두번째 방법으로 미디곡 녹음하는 방법을 알려드립니다.<br>
+			   다음의 그림을 보시고 천천히 따라해보세요.<br><br></center>
+		   
+  <!-- 본문 -->
+  <main>
+    <div class="container">
+
+      <div class="manual-content">
+
+        <!-- 이미지 1 -->
+        <div class="image-box">
+          <img src="manual/18.png" alt="활성버튼  1">
+        </div
+		  [상단이미지 설명] <br>
+		위에 이미지에서 1번의 세로줄은 기존 마디를 정하는 세로줄과는 조금<br>
+	    다르게 보일것입니다.이것이 인디케이터 줄이라고 흔히 표현합니다.<br>
+		곡이 진행되어 가는 마디를 가리켜주는 표시줄이라고 생각하면 됩니다.<br>
+			그래서 1번의 인디케이터 줄을 첫마디에 옮겨 두어야 되겠죠.<br>
+			그러기 위해서는 키보드의 가장 우측 하단에 보시면<br>
+			점하나 찍혀있고 DEL 이라고 쓰여진 버튼을 클릭합니다.<br>
+			인디케이터 줄이 첫마디로 위치 되어 진걸 확인 할수 있습니다.<br>
+			그리고 2번의 빨간색 테두리는 스냅버튼이라고 합니다.<br>
+			이것은 클릭할때마다 색깔이 바뀝니다.<br>
+			ON 으로 활성화 되어 있으면 음정을 입력할때 박자에 딱 맞게 저절로<br>
+			입력이 되게끔 하고, OFF 로 활성화 되어 있으면 음정을 입력할때 <br>
+			정박자에 입력이 되지 않고 애매한 박자에 걸쳐지게 됩니다.<br>
+			당분간 기초공부를 위해서는 ON으로 활성화 해놓은 상태로<br>
+			배워 나가기를 바랍니다.
+			그리고 3번의 빨간색 테두리는 내가 입력할 최소의 음정길이단위를 <br>
+			설정해주는 곳입니다.그림상에는 16분음표가 설정되어 있네요.<br>
+			그것은 내가 최소단위로 16분음표를 찍어 음정을 입력하겠다는 뜻입니다.<br>
+			만약에 내가 입력할 곡의 가장 짧은 음정의 단위가 8분음표라면<br>
+			세모를 클릭하시면 나오는 단위들중에 8분음표를 선택하시면 됩니다.<br>
+			그리고 다음 4번의 빨간색 테두리는 Draw 버튼입니다.<br>
+			이버튼은 선택한뒤에 트랙의 우측빈곳을 클릭후 원하는 마디수만큼 드래그하여<br>
+			놓으면 음정을 입력할수 있는 새로운 오선지가 만들어진다고 보시면 됩니다.<br>
+			버튼 4번의 상세이미지는 아래 이미지를 참고 하세요.<br>
+			
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/19.png" alt="이미지 2">
+			
+        </div>
+		<!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/20.png" alt="이미지 3">
+        </div>	
+		 이제 모든 준비는 갖추어 졌으니 음정을 찍어볼까요.<br>
+			[상단이미지 설명 ]<br>
+			그러기위해서는 우선 위그림에서 1번의 메뉴버튼을 클릭합니다.<br>
+			이 버튼은 가장 많이 사용되어 지는 버튼이니까 잘 기억하세요.<br>
+			이버튼은 선택버튼입니다.흔히 오브젝트 셀렉트 버튼이죠.<br>
+			워낙 많이 사용되는 버튼이니까 단축키로 기억하세요.단축키는 번호로 1번 입니다.<br>
+			그림처럼 1번을 선택한뒤 2번을 더블클릭하세요.
+			그러면 다음 아래쪽 이미지처럼 새로운 작업창이 열립니다(아래쪽 이미지 참조).
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/21.png" alt="이미지 3">
+        </div>
+		  [상단이미지 설명 ]<br>
+			위쪽 이미지에서 보고 설명을 참고하세요.<br>
+			위에서 클릭해야 할부분은 연필모양의 음표입력버튼<br>
+			원래의 설정값으로는 8번숫자가 단축키입니다.<br>
+		    그리고 선택해야 할 곳은 ON 으로 설정해야할 스냅버튼입니다.<br>
+			나머지는 그냥 설명만 참고 하세요.<br>
+			두가지 선택을 했다면 아래쪽 다음 이미지처럼<br>
+			연필툴을 사용해서 마음대로 아무거나 클릭해서<br>
+			음정을 찍어봅시다.<br>
+		   <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/22.png" alt="이미지 3">
+        </div>
+		 [상단이미지 설명 ]<br>
+			위쪽 이미지처럼 그냥 빈칸에 클릭한번 하면<br>
+			자동으로 음표가 C4음자리에 16분음표 길이만큼 찍혀있는것이 보일겁니다.<br>
+			이미지에서는 16분음표 4개가 찍혀서 1박자를 이루고 있습니다.<br>
+		    그리고는 C4 음정에 한박자 짜리 음정이 찍혀 있습니다.<br>
+			그 뒤에도 E4음정이 한박자 짜리로 찍혀있습니다<br>
+			그 뒤에는 반박자짜리 음정이 4개 찍혀있습니다.<br>
+			그리고 한박자짜리 음정이 찍혀있습니다.<br>
+			마우스를 한번 클릭하면 최소 음정길이 16분음표가 찍혀지고<br>
+			마우스를 클릭한 상태에서 원하는 길이만큼 드래그 하면<br>
+			원하는 길이만큼의 음정이 찍혀집니다.<br>
+			그렇게 나머지 음정들도 원하는대로 찍으시면 됩니다.<br>
+			음정을 다 찍으셨다면 인디케이터를 처음 마디로 보냅니다.(키보다 우측하단의 점 버튼)<br>
+		    그리고 스페이스바(play) 를 눌러 플레이 시켜서 들어봅니다.<br>
+			멈춤을 할때도 스페이스바를 누르시면 됩니다.<br>
+			이렇게 해서 기본적인 음정 입력방법을 배워보았습니다.<br>
+			초보자라면 여기까지 강좌를 보아도 궁금한점이 많으실겁니다.<br>
+			궁금한점은 언제든지 질문하세요.직접 오프라인 강좌를 한다면,<br>
+			파생되는 여러가지들의 버튼들도 함께 곁들여 살명이 가능하지만<br>
+			온라인으로 교재를 만들다보니 분량의 한계때문에 그러지 못한점 있습니다.<br>
+			양해하시고 언제든지 궁금한점은 질문하시기 바랍니다.<br>
+		</div>
+
+      <!-- 하단 버튼 -->
+      <div class="nav-buttons">
+        <a href="1-1.html" class="btn">← 목록으로</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    © 2026 museline. All Rights Reserved.
+  </footer>
+
+  <!-- 이미지 확대 모달 -->
+  <div class="image-modal" id="imageModal">
+    <div class="close-text">닫기 ×</div>
+    <img id="modalImage" src="" alt="확대 이미지">
+  </div>
+
+  <script>
+    const modal = document.getElementById("imageModal");
+    const modalImage = document.getElementById("modalImage");
+    const images = document.querySelectorAll(".image-box img");
+
+    images.forEach(img => {
+      img.addEventListener("click", () => {
+        modal.style.display = "flex";
+        modalImage.src = img.src;
+        modalImage.alt = img.alt;
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        modalImage.src = "";
+        document.body.style.overflow = "";
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        modal.style.display = "none";
+        modalImage.src = "";
+        document.body.style.overflow = "";
+      }
+    });
+  </script>
+
+</body>
+</html>
