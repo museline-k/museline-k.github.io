@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>오디오파일 불러오기</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background: #121317;
+      color: #f3ede6;
+      line-height: 1.7;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* 상단 메뉴 */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 16, 20, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      padding: 14px 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      font-size: 0.95rem;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.16);
+    }
+
+    /* 헤더 */
+    header {
+      text-align: center;
+      padding: 10px 10px 0px;
+      background: linear-gradient(to bottom, #1a1c22, #131419);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 400;
+    }
+
+    header p {
+      margin-top: 12px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+    }
+
+    /* 본문 */
+    main {
+      padding: 40px 0 80px;
+    }
+
+    .manual-content {
+      display: grid;
+      gap: 28px;
+    }
+
+    .image-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .image-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .image-box img:hover {
+      transform: scale(1.01);
+      opacity: 0.96;
+    }
+
+    .caption {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+    }
+
+    /* 하단 버튼 */
+    .nav-buttons {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.16);
+      transform: translateY(-1px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* 이미지 확대 모달 */
+    .image-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.92);
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      cursor: pointer;
+    }
+
+    .image-modal img {
+      max-width: 95%;
+      max-height: 95%;
+      width: auto;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      cursor: default;
+    }
+
+    .image-modal .close-text {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.7rem;
+      }
+
+      .nav-buttons {
+        flex-direction: column;
+      }
+
+      .image-modal {
+        padding: 16px;
+      }
+
+      .image-modal .close-text {
+        top: 12px;
+        right: 16px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 메뉴 -->
+  <nav>
+    <div class="container">
+      <a href="index.html">홈</a>
+      <a href="midi.html">미디강좌</a>
+      <a href="1-1.html">메뉴얼 목록</a>
+    </div>
+  </nav>
+
+  <!-- 제목 -->
+  <header>
+    <h1>큐베이스에 오디오파일 불러오기  </h1><div class="caption" style="color: #ffcc00; font-size: 1.2rem;">
+  이미지를 클릭하면 크게보입니다. 되돌리기는 키보드의 ESC 클릭.
+</div>
+    
+  </header>
+           <center>미디건반이란 무엇인가?<br><br></center>
+		   
+  <!-- 본문 -->
+  <main>
+    <div class="container">
+
+      <div class="manual-content">
+
+       큐베이스에서 오디오 파일을 불러오는 방법은 <br>
+아래 이미지와 같이 따라 하시면 됩니다.<br>
+큐베이스 상단의 메뉴들중에 가장 앞쪽에 있는<br>
+File 메뉴를 클릭하면 하위메뉴가 보입니다.<br>
+그중에서 Import(가져오기) 하위메뉴중에서 Audio File 클릭합니다.<br>
+		  <!-- 이미지 1 -->
+        <div class="image-box">
+          <img src="manual/38.png" alt="활성버튼  1">
+		  </div>
+		 
+		오디오파일이 들어있는 내 컴퓨터 드라이브를 찾아갑니다.<br>
+그래서 열고자 하는 오디오파일이 위치한 드라이브에서<br>
+원하는 파일을 선택한후 열기를 클릭합니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/39.png" alt="이미지 2">
+			
+        </div>
+		 새로운 창이 하나 열리면서 체크항목이 보입니다.<br>
+아래 그림처럼 빨간 부분만 체크 하시고 OK 누르세요.<br>
+중요한 내용이 포함된거 아니니까 모르셔도 아무 문제 없습니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/40.png" alt="이미지 2">
+			
+        </div>
+		최종적으로 오디오파일이 불러와졌습니다(아래 이미지참조)<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/41.png" alt="이미지 2">
+			불어와진 오디오 파일에 대해서 이것 저것 조정을 필요한 부분을<br>
+알려드리겠습니다.<br>
+작업을 원활하게 하기위해서 오디오 파형의 크기를 더 크게 ,더 넓게해서<br>
+보고 싶을때 아래 이미지와 같은 방식으로 한번 작동해보세요.<br>
+이미지 내용대로 작동해보면 금방 어떤 의미인지 이해가 되실겁니다.<br>
+상단 영역에 클릭후 키보드 자판에서 영문으로 (중요함) H를 두세번<br>
+연속으로 터치 해보시면서 큐베이스 화면의 오디오파일이 어떤<br>
+변화가 생기는지 눈여겨 보세요.충분히 이해 되실겁니다.<br>
+그리고 역시 하단에도 같은 방식으로 해보면 어떤 변화가 <br>
+생기는지 알수 있습니다.<br>
+작업 영역을 확대하는 방법입니다.<br>
+이제는 그냥 H와 G 만 누르지 마시고 <br>
+이번에는 상단 영역에서 SHIFT + H 와 SHIFT + G 를 눌러보세요.<br>
+그러면 또한 어떤 변화가 생기는지 눈여겨 보세요.<br>
+이상으로 작업영역의 확장과 축소를 할수 있는 방식입니다.<br>
+실제 작업을 하다보면 상당히 자주 사용하게되는 부분이니<br>
+익혀서 손에 익혀두세요.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/42.png" alt="이미지 2">
+			 </div>
+            다음 강좌에 불러온 오디오파일로 여러가지 작업을,<br>
+해보도록 하겠습니다.<br>
+        
+			<!-- 하단 버튼 -->
+      <div class="nav-buttons">
+        <a href="1-1.html" class="btn">← 목록으로</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    © 2026 museline. All Rights Reserved.
+  </footer>
+
+  <!-- 이미지 확대 모달 -->
+  <div class="image-modal" id="imageModal">
+    <div class="close-text">닫기 ×</div>
+    <img id="modalImage" src="" alt="확대 이미지">
+  </div>
+
+  <script>
+    const modal = document.getElementById("imageModal");
+    const modalImage = document.getElementById("modalImage");
+    const images = document.querySelectorAll(".image-box img");
+
+    images.forEach(img => {
+      img.addEventListener("click", () => {
+        modal.style.display = "flex";
+        modalImage.src = img.src;
+        modalImage.alt = img.alt;
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        modalImage.src = "";
+        document.body.style.overflow = "";
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        modal.style.display = "none";
+        modalImage.src = "";
+        document.body.style.overflow = "";
+      }
+    });
+  </script>
+
+</body>
+</html>
