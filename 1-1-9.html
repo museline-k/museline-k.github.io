@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>오디오파일 불러오기</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background: #121317;
+      color: #f3ede6;
+      line-height: 1.7;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* 상단 메뉴 */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 16, 20, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      padding: 14px 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      font-size: 0.95rem;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.16);
+    }
+
+    /* 헤더 */
+    header {
+      text-align: center;
+      padding: 10px 10px 0px;
+      background: linear-gradient(to bottom, #1a1c22, #131419);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 400;
+    }
+
+    header p {
+      margin-top: 12px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+    }
+
+    /* 본문 */
+    main {
+      padding: 40px 0 80px;
+    }
+
+    .manual-content {
+      display: grid;
+      gap: 28px;
+    }
+
+    .image-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .image-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .image-box img:hover {
+      transform: scale(1.01);
+      opacity: 0.96;
+    }
+
+    .caption {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+    }
+
+    /* 하단 버튼 */
+    .nav-buttons {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.16);
+      transform: translateY(-1px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* 이미지 확대 모달 */
+    .image-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.92);
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      cursor: pointer;
+    }
+
+    .image-modal img {
+      max-width: 95%;
+      max-height: 95%;
+      width: auto;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      cursor: default;
+    }
+
+    .image-modal .close-text {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.7rem;
+      }
+
+      .nav-buttons {
+        flex-direction: column;
+      }
+
+      .image-modal {
+        padding: 16px;
+      }
+
+      .image-modal .close-text {
+        top: 12px;
+        right: 16px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 메뉴 -->
+  <nav>
+    <div class="container">
+      <a href="index.html">홈</a>
+      <a href="midi.html">미디강좌</a>
+      <a href="1-1.html">메뉴얼 목록</a>
+    </div>
+  </nav>
+
+  <!-- 제목 -->
+  <header>
+    <h1>큐베이스 설치후 세팅하기  </h1><div class="caption" style="color: #ffcc00; font-size: 1.2rem;">
+  이미지를 클릭하면 크게보입니다. 되돌리기는 키보드의 ESC 클릭.
+</div>
+    
+  </header>
+           <center>미디건반이란 무엇인가?<br><br></center>
+		   
+  <!-- 본문 -->
+  <main>
+    <div class="container">
+
+      <div class="manual-content">
+
+        큐베이스 설치후 프로그램을 열기하면 첫번째로 나타나는 화면입니다.<br>
+         1번 테두리는 작업물을 어디에 저장할것인지 위치를 묻는곳입니다.<br>
+        작업물 저장위치를 선택한뒤에 2번 테두리의 새창열기를 클릭합니다.<br>
+		  <!-- 이미지 1 -->
+        <div class="image-box">
+          <img src="manual/26.png" alt="활성버튼  1">
+		  </div>
+		 
+			처음으로 설정할 화면은 아래 이미지처럼 studio 메뉴를 클릭하면<br>
+            하위메뉴중에서 studio setup 을 클릭합니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/27.png" alt="이미지 2">
+			
+        </div>
+		 새로운 창이 뜨면 왼쪽의 오디오시스템 항목을 클릭하면 <br>
+         오른쪽의 2번 테두리에서 삼각형을 클릭하면 하위메뉴들이 나타납니다.<br>
+         이곳에서 본인의 오디오 인터페이스 제품을 선택해준뒤에<br>
+         OK 누르시면 됩니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/28.png" alt="이미지 2">
+			
+        </div>
+		다음으로 다시 studio 메뉴를 클릭하여 하위메뉴중에 Audio Connections<br>
+        클릭합니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/29.png" alt="이미지 2">
+			왼쪽의 Inputs 항목을 선택합니다.<br>
+            우측의 화살표부분을 클릭하면 하위메뉴중에 본인의 오디오 인터페이스<br>
+            제품을 선택하면 됩니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/30.png" alt="이미지 2">
+			 </div>
+              이번에는 아래 그림처럼 Outputs 항목을 선택한뒤<br>
+              아래쪽에서 본인의 오디오 인터페이스 제품을 선택하면 됩니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/31.png" alt="이미지 2">
+			</div>
+			이번에는 상단 메뉴에서 Project 항목을 클릭하여 맨 아래쪽에<br>
+            project Setup 항목을 클릭합니다. <br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/32.png" alt="이미지 2">
+			</div>
+			아래 이미지처럼 새창이 열리면 하단에 빨간 테두리처럼<br>
+            항목마다의 삼각형을 클릭하여 그림과같은 설정값으로<br>
+            바꾸어 놓고 아래쪽 OK를 클릭합니다.<br>
+            참고로 다른 비트나 샘플래이트로 설정값이 있지만<br>
+            화면처럼 설정값을 하면 프로그램의 원활한 운영에 도움이 되고,<br>
+            이렇게 설정값을 해도 사용에는 아무런 문제 없습니다. <br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/33.png" alt="이미지 2">
+			</div>
+			설정이 끝난뒤 화면 구조는 아래 이미지와 같습니다.<br>
+           여기서 우측 상단 빨간테두리에 보시면 3가지탭에 하얀색으로 <br>
+           표시 되어 있습니다. 왼쪽부터 하나씩 클릭해보면<br>
+           가장 왼쪽 하얀색 탭을 클릭하면 좌측의 빨간색 테두리가<br>
+           보였다 안보였다 합니다.<br>
+           가운데 하얀색 탭을 클릭을 여러번 해보면 아래쪽 하단 빨간색 테두리가<br>
+           보였다 안보였다 합니다.<br>
+           세번째 하얀색 탭을 클릭해보면 우측의 빨간색 테두리 창이 <br>
+			보였다 안보였다 할겁니다.<br>
+           각각의 작업화면을 보이게,,,혹은 안보이게 하는 역활입니다.<br>
+            기억하시기 바랍니다. 각각의 쓰임새가 있습니다.<br>
+          앞으로 작업을 하나씩 실제로 해가면서 설명해도 되니까 <br>
+          이번 강좌에서는 넘어 가겠습니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/34.png" alt="이미지 2">
+			</div>
+			 아래쪽 이미지설명하겠습니다.<br>
+            모든 설정작업이 끝나면<br>
+            그림처럼 본인의 컴퓨터에 보관하던<br>
+             오디오 파일 하나를 불러 보겟습니다.<br>
+            이미지처럼 클릭을 하면 나타나는 하위메뉴에서<br>
+              Add Audio Track 을 클릭합니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/35.png" alt="이미지 2">
+			</div>
+			
+		     아래 그림처럼 트랙설정창이 뜹니다.<br>
+            빨간테두리처럼 삼각형을 클릭하여 Stereo in 으로 선택하고,<br>
+             아래쪽도 그림처럼 선택한뒤 Add Track 버튼을 누릅니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/36.png" alt="이미지 2">
+			</div>
+			
+			 아래쪽 그림처럼 오디오파일을 불러올수 있는<br>
+             트랙이 하나 만들어졌습니다.<br>
+              이제 오디오파일을 불러올 차례입니다.<br>
+            세로로 빨간색 테두리는 인티케이터 입니다.<br>
+            이부분을 첫부분에 가져다 놓아야 합니다.<br>
+            그러기 위해서는 키보드에서 우측 하단의<br>
+            점하나 찍힌 DEL 키를 누르시면<br>
+            자동으로 첫부분에 위치하게 됩니다.<br>
+        <!-- 이미지 2 -->
+        <div class="image-box">
+          <img src="manual/37.png" alt="이미지 2">
+			</div>
+			여기까지 큐베이스 설치후 설정값 정해주는것과<br>
+			첫 화면에서 오디오파일 불러오는 트랙 하나를<br>
+			생성해봤습니다.<br>
+			다음시간에는 트랙에 오디오파일을 실제로<br>
+			불러오는 부분을 강좌하겠습니다.<br><br>
+			<!-- 하단 버튼 -->
+      <div class="nav-buttons">
+        <a href="1-1.html" class="btn">← 목록으로</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    © 2026 museline. All Rights Reserved.
+  </footer>
+
+  <!-- 이미지 확대 모달 -->
+  <div class="image-modal" id="imageModal">
+    <div class="close-text">닫기 ×</div>
+    <img id="modalImage" src="" alt="확대 이미지">
+  </div>
+
+  <script>
+    const modal = document.getElementById("imageModal");
+    const modalImage = document.getElementById("modalImage");
+    const images = document.querySelectorAll(".image-box img");
+
+    images.forEach(img => {
+      img.addEventListener("click", () => {
+        modal.style.display = "flex";
+        modalImage.src = img.src;
+        modalImage.alt = img.alt;
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        modalImage.src = "";
+        document.body.style.overflow = "";
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        modal.style.display = "none";
+        modalImage.src = "";
+        document.body.style.overflow = "";
+      }
+    });
+  </script>
+
+</body>
+</html>
