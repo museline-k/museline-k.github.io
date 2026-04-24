@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>기초이론 2편 </title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background: #121317;
+      color: #f3ede6;
+      line-height: 1.7;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* 상단 메뉴 */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 16, 20, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      padding: 14px 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      font-size: 0.95rem;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.16);
+    }
+
+    /* 헤더 */
+    header {
+      text-align: center;
+      padding: 10px 10px 0px;
+      background: linear-gradient(to bottom, #1a1c22, #131419);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 400;
+    }
+
+    header p {
+      margin-top: 12px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+    }
+
+    /* 본문 */
+    main {
+      padding: 40px 0 80px;
+    }
+
+    .manual-content {
+      display: grid;
+      gap: 28px;
+    }
+
+    .image-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .image-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .image-box img:hover {
+      transform: scale(1.01);
+      opacity: 0.96;
+    }
+
+    .caption {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+    }
+
+    /* 하단 버튼 */
+    .nav-buttons {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.16);
+      transform: translateY(-1px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* 이미지 확대 모달 */
+    .image-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.92);
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      cursor: pointer;
+    }
+
+    .image-modal img {
+      max-width: 95%;
+      max-height: 95%;
+      width: auto;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      cursor: default;
+    }
+
+    .image-modal .close-text {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.7rem;
+      }
+
+      .nav-buttons {
+        flex-direction: column;
+      }
+
+      .image-modal {
+        padding: 16px;
+      }
+
+      .image-modal .close-text {
+        top: 12px;
+        right: 16px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 메뉴 -->
+  <nav>
+    <div class="container">
+      <a href="index.html">홈</a>
+      <a href="lesson.html">작곡강좌</a>
+      <a href="2-1.html">메뉴얼 목록</a>
+    </div>
+  </nav>
+
+  <!-- 제목 -->
+  <header>
+    <h1>음정 배우기 1편</h1>
+    <div class="caption" style="color: #ffcc00; font-size: 1.2rem;">
+  이미지를 클릭하면 크게보입니다. 되돌리기는 키보드의 ESC 클릭.
+</div>
+    
+  </header>
+
+  <!-- 본문 -->
+  <main>
+    <div class="container">
+
+      <div class="manual-content">
+아래의 이미지 설명 합니다.<br>
+	어떠한 음 하나와,  또 다른 음 하나.<br>
+이렇게 두음 사이의 거리가 얼마나<br>
+멀리 떨어져 있느냐 하는것의 수치로<br>
+나타낸것이 음정입니다.<br><br>
+음정의 종류는 이미지에 나와있는대로<br>
+전부 7가지 입니다.<br>
+굳이 전부다 외울 필요는 없지만<br>
+장음정,단음정,완전음정....이렇게<br>
+3가지만이라도 꼭 기억하시기 바랍니다.<br>
+그리고,<br> 
+이미지에서 음정의 순환도가 나오는데요...<br>
+복잡한듯 표현되어 있을뿐<br>
+어려운거 한개도 없습니다.<br>
+이것만 기억하세요.<br><br>
+완전음정은 1도,4도,5도,8도 가 있다.<br>
+장음정은 2도,3도,6도,7도 가 있다.<br>
+이것이 전부입니다.<br>
+예를 들자면....완전2도...이런거 존재 안합니다.<br>
+또는,장5도 이런것도 존재 안합니다.<br>
+1,4,5,8 은 무조건 완전이라는 낱말로 사용합니다.<br>
+2,3,6,7 은 절대로 완전이라는 낱말을 붙이면 안됩니다.<br>
+이것이 펙트입니다.<br>
+나머지는 일부러 기억할려고 안하셔도 됩니다.<br>
+왜냐하면 앞으로 이론공부 내내 음정이야기가<br>
+계속 나오기때문에 귀아프도록 학습할것입니다.<br>
+저절로 귀에 못이 박히게 될겁니다.<br>
+오늘 강좌의 펙트는 다음과 같습니다.<br>
+완전음정은 1도,4도,5도,8도 가 있다.<br>
+장음정은 2도,3도,6도,7도 가 있다.<br>	  
+        <!-- 이미지 1 -->
+        <div class="image-box">
+          <img src="lesson/7.png" alt="기초이론   2">
+        </div>
+
+    
+
+      <!-- 하단 버튼 -->
+      <div class="nav-buttons">
+        <a href="2-1.html" class="btn">← 목록으로</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    © 2026 museline. All Rights Reserved.
+  </footer>
+
+  <!-- 이미지 확대 모달 -->
+  <div class="image-modal" id="imageModal">
+    <div class="close-text">닫기 ×</div>
+    <img id="modalImage" src="" alt="확대 이미지">
+  </div>
+
+  <script>
+    const modal = document.getElementById("imageModal");
+    const modalImage = document.getElementById("modalImage");
+    const images = document.querySelectorAll(".image-box img");
+
+    images.forEach(img => {
+      img.addEventListener("click", () => {
+        modal.style.display = "flex";
+        modalImage.src = img.src;
+        modalImage.alt = img.alt;
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        modalImage.src = "";
+        document.body.style.overflow = "";
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        modal.style.display = "none";
+        modalImage.src = "";
+        document.body.style.overflow = "";
+      }
+    });
+  </script>
+
+</body>
+</html>
